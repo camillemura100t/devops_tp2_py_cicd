@@ -1,0 +1,232 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/AdrienCeschin6/PY_CICD/1.0.0
+info:
+  description: This is an API that allows to manage the list of machines of a company and the versions of applications owned by the company
+  version: "1.0.0"
+  title: Python CICD Application
+  contact:
+    email: adrien.ceschin.devops@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: admins
+    description: Secured Admin-only calls
+  - name: users
+    description: Operations available to regular users
+paths:
+  /machine/{hostname}:
+    get:
+      tags:
+        - users
+      summary: retrieves a specific machine from its hostname
+      operationId: getMachine
+      description: |
+        By passing in the hostname of a machine you can get back all characteristics of this machine.
+      parameters:
+        - in: path
+          name: hostname
+          description: specify the hostname of the machine you want the intel from.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Machine'
+        '400':
+          description: bad input parameter
+    patch:
+      tags:
+        - admins
+      summary: updates a machine's caracteristics
+      operationId: apiUpdateMachine
+      description: get a specific machine from its hostname and updates part or the whole of its characteristics.
+      parameters:
+        - in: path
+          name: hostname
+          description: specify the hostname of the machine you want to update.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: machine added
+        '400':
+          description: invalid input, object invalid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Machine'
+        description: machine components to update
+    delete:
+      tags:
+        - admins
+      summary: removes a machine 
+      operationId: removeMachine
+      description: remove a specific machine, selected from its hostname, from the list of machines.
+      parameters:
+        - in: path
+          name: hostname
+          description: specify the hostname of the machine you want to remove.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: machine removed
+        '400':
+          description: invalid parameter
+  /machine:
+    post:
+      tags:
+        - admins
+      summary: adds a machine
+      operationId: addMachine
+      description: Adds a new machine to the existing list
+      responses:
+        '201':
+          description: machine added
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing machine already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Machine'
+        description: Machine to add
+  /machines:
+    get:
+      tags:
+        - users
+      summary: retrieves the list of machines
+      operationId: getMachines
+      description: Send back the list of all the machines.
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/Machine'
+        '400':
+          description: bad input parameter
+  /apps:
+    get:
+      tags:
+        - admins
+      summary: retrieve the versions of the app
+      operationId: getAppVersions
+      description: Search for all the versions of the application available on the Nexus Server. Uses the Nexus API to get it.
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/App'
+        '400':
+          description: bad input parameter
+  /app:
+    post:
+      tags: 
+        - admins
+      summary: add a new application
+      operationId: addApp
+      description: allows to upload a new application to the Nexus Server.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        description: The path to the application to upload
+        required: true
+      responses:
+        '201':
+          description: machine added
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing machine already exists
+components:
+  schemas:
+    Machine:
+      type: object
+      required:
+        - hostname
+      properties:
+        hostname:
+          type: string
+          format: uuid
+          example: "Granada"
+        ip:
+          type: string
+          example: "192.168.0.50"
+        nbrCpu:
+          type: integer
+          format: int64
+          example: 4
+        ramSize:
+          type: integer
+          format: int64
+          example: 8192
+        nbrHdd:
+          type: integer
+          format: int64
+          example: 2
+        sizeHdd:
+          type: array
+          items:
+            type: integer
+            format: int64
+          example: [8132,8132]
+        versionsOs:
+          type: object
+          properties:
+            os:
+              type: array
+              items:
+                type: string  
+                format: byte
+          example: {'windows':['xp','vista'],'debian':['debian10']}
+    App:
+      type: object
+      required:
+        - name
+        - version
+      properties:
+        name:
+          type: string
+          format: byte
+          example: "appTest"
+        version:
+          type: string
+          format: byte
+          example: '1.2.0'
+        auteur:
+          type: string
+          format: byte
+          example: 'Bill Gates'
+        licence:
+          type: string
+          format: byte
+          example: '408-867-5309'
