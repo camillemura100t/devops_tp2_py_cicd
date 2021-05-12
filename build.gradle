@@ -24,6 +24,18 @@ task dependencies(type:Exec, dependsOn: purge) {
     ext.output = { return standardOutput.toString() }
 } */
 
+/*task pycodestyle(type:Exec) {
+    executable 'sh'
+    args '-c', "pycodestyle src/ >> result-pycode.txt"
+    ignoreExitValue true
+}
+
+task lint(type:Exec) {
+    executable 'sh'
+    args '-c', "flake8 --output-file=output.txt src/"
+    ignoreExitValue true
+} */
+
 def tarfile = "application-" + version
 
 task packageDistribution(type: Zip, dependsOn: dependancies) {
@@ -39,15 +51,3 @@ task up(type:Exec, dependsOn: packageDistribution) {
     standardOutput = new ByteArrayOutputStream()
     ext.output = { return standardOutput.toString() }
 }
-
-/*task pycodestyle(type:Exec) {
-    executable 'sh'
-    args '-c', "pycodestyle src/ >> result-pycode.txt"
-    ignoreExitValue true
-}
-
-task lint(type:Exec) {
-    executable 'sh'
-    args '-c', "flake8 --output-file=output.txt src/"
-    ignoreExitValue true
-} */
