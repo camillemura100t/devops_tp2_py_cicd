@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### Installation Jenkins
 ## On met à jour le systeme pour pouvoir installer
 
 sudo apt update -y
@@ -36,6 +37,11 @@ sudo useradd -m userjob -d /home/userjob
 ## Lui donner les permissions (via le fichier sudoers) d'utiliser apt (et seulement apt pas l'ensemble des droits admin)
 
 echo 'userjob ALL=(ALL:ALL) /usr/bin/apt' | sudo EDITOR='tee -a' visudo
+
+### Installation de Python
+
+sudo apt update -y
+sudo apt install -q -y python3 python3-dev python3-pip
 
 ## On active le firewall, on ouvre le port 8087 et les connexions ssh
 
