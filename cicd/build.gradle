@@ -1,0 +1,46 @@
+def majorVersion = System.getenv("MAJOR_VERSION") ?: "1"
+def minorVersion = System.getenv("MINOR_VERSION") ?: "0"
+version = majorVersion + "." + minorVersion
+
+
+task purge(type:Delete) {
+    //println 'Cleaning up old files'
+    delete 'build'
+}
+
+task dependencies(type:Exec, dependsOn: purge) {
+    //println 'Installing dependencies'
+    executable 'sh'
+    args '-c', 'pip install flask pytest'
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = { return standardOutput.toString() }
+}
+
+task test(type:Exec, dependsOn: dependances) {
+    //println 'Executing tests' 
+    executable 'sh'
+    args '-c', 'pytest test/test.py'
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = { return standardOutput.toString() }
+}
+
+def tarfile = "application-" + version
+task packageDistribution(type: Zip, dependsOn: dependances) {
+    //println 'Packaging'
+    from ('app') { into '.' }
+    archiveFileName = tarfile + ".zip"
+    destinationDirectory = file("build")
+}
+
+
+task pycodestyle(type:Exec) {
+    executable 'sh'
+    args '-c', "pycodestyle src/ >> result-pycode.txt"
+    ignoreExitValue true
+}
+
+task lint(type:Exec) {
+    executable 'sh'
+    args '-c', "flake8 --output-file=output.txt src/"
+    ignoreExitValue true
+}
