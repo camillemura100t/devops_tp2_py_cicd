@@ -11,29 +11,36 @@ task purge(type:Delete) {
 task dependencies(type:Exec, dependsOn: purge) {
     //println 'Installing dependencies'
     executable 'sh'
-    args '-c', 'pip install flask pytest'
+    args '-c', 'pip install flask'
     standardOutput = new ByteArrayOutputStream()
     ext.output = { return standardOutput.toString() }
 }
 
-task test(type:Exec, dependsOn: dependances) {
+/*task test(type:Exec, dependsOn: dependances) {
     //println 'Executing tests' 
     executable 'sh'
     args '-c', 'pytest test/test.py'
     standardOutput = new ByteArrayOutputStream()
     ext.output = { return standardOutput.toString() }
-}
+} */
 
 def tarfile = "application-" + version
-task packageDistribution(type: Zip, dependsOn: dependances) {
+
+task packageDistribution(type: Zip, dependsOn: dependancies) {
     //println 'Packaging'
     from ('app') { into '.' }
     archiveFileName = tarfile + ".zip"
     destinationDirectory = file("build")
 }
 
+task up(type:Exec, dependsOn: packageDistribution) {
+    executable 'sh'
+    args '-c', 'curl -v --user "admin:S0n@N3x951/" --upload-file build/application-1.0.zip http://192.168.0.101:8086/repository/apprepo/app-python/application-1.0.zip'
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = { return standardOutput.toString() }
+}
 
-task pycodestyle(type:Exec) {
+/*task pycodestyle(type:Exec) {
     executable 'sh'
     args '-c', "pycodestyle src/ >> result-pycode.txt"
     ignoreExitValue true
@@ -43,4 +50,4 @@ task lint(type:Exec) {
     executable 'sh'
     args '-c', "flake8 --output-file=output.txt src/"
     ignoreExitValue true
-}
+} */
