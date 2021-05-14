@@ -10,7 +10,7 @@ task purge(type:Delete) {
 task installdeps(type:Exec, dependsOn: purge) {
     //println 'Installing dependencies'
     executable 'sh'
-    args '-c', 'pip install flask'
+    args '-c', 'sudo pip install flask'
     standardOutput = new ByteArrayOutputStream()
     ext.output = { return standardOutput.toString() }
 }
