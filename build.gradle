@@ -2,13 +2,12 @@ def majorVersion = System.getenv("MAJOR_VERSION") ?: "1"
 def minorVersion = System.getenv("MINOR_VERSION") ?: "0"
 version = majorVersion + "." + minorVersion
 
-
 task purge(type:Delete) {
     //println 'Cleaning up old files'
     delete 'build'
 }
 
-task dependencies(type:Exec, dependsOn: purge) {
+task dependences(type:Exec, dependsOn: purge) {
     //println 'Installing dependencies'
     executable 'sh'
     args '-c', 'pip install flask'
@@ -38,7 +37,7 @@ task lint(type:Exec) {
 
 def tarfile = "application-" + version
 
-task packageDistribution(type: Zip, dependsOn: dependancies) {
+task packageDistribution(type: Zip, dependsOn: dependances) {
     //println 'Packaging'
     from ('app') { into '.' }
     archiveFileName = tarfile + ".zip"
