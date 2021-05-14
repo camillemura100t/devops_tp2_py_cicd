@@ -1,4 +1,5 @@
 import MachineUtils
+import ApplicationUtils
 import json
 from Machine import *
 
@@ -67,9 +68,35 @@ def manageMachines() :
             print('S\'il vous plaît entrez un choix valide parmi les suivants.')
 
 #General intelligence of the class on the applications' versions side of the app. Allows the user to chose which action
-#shall be done and to redirect to the correct management.    
+#shall be done and to redirect to the correct management.
 def manageApp():
-    print("manageApp")
+    choiceApplication = "start"
+    while choiceApplication != "Q":
+        print('Voulez-vous : ')
+        print('    - consulter la liste des applications disponibles sur le serveur Nexus (tapez "list")')
+        print('    - ajouter une application sur le serveur Nexus (tapez "ajouter")')
+        print('    - quitter le panneau de contrôle des applications (tapez "Q")')
+        choiceApplication = input()
+        if choiceApplication == "list":
+            print(ApplicationUtils.listApplications())
+        elif choiceApplication == "ajouter":
+            manageAddApplication()
+        elif choiceApplication == "Q":
+            print('Retour au panneau d\'accueil.')
+            print('########################')
+        else:
+            print('S\'il vous plaît entrez un choix valide parmi les suivants.')
+
+#This method adds a new application to the list of applications available in the 
+#nexus repository
+def manageAddApplication():
+    print('Merci de saisir un répertoire pour stocker votre application (ex: /app-python)')
+    directory = input()
+    print('Merci de saisir le chemin complet de votre application (ex: /home/vagrant/project/build/application-1.0.zip)')
+    filepath = input()
+    print('Merci de saisir le nom que vous voulez donner à votre application (ex: app_py_test)')
+    filenametodisplay = input()
+    ApplicationUtils.AddApplication(directory,filepath,filenametodisplay)
 
 #This variable allows to loop on the first menu of the app. If set to Q will exit the app. Initial value set to start.
 choice = "start"
