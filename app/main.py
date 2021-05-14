@@ -96,7 +96,7 @@ def manageAddApplication():
     filepath = input()
     print('Merci de saisir le nom que vous voulez donner à votre application (ex: app_py_test)')
     filenametodisplay = input()
-    ApplicationUtils.AddApplication(directory,filepath,filenametodisplay)
+    ApplicationUtils.addApplication(directory,filepath,filenametodisplay)
 
 #This variable allows to loop on the first menu of the app. If set to Q will exit the app. Initial value set to start.
 choice = "start"
