@@ -7,13 +7,13 @@ task purge(type:Delete) {
     delete 'build'
 }
 
-task dependences(type:Exec, dependsOn: purge) {
+/*task dependences(type:Exec, dependsOn: purge) {
     //println 'Installing dependencies'
     executable 'sh'
     args '-c', 'pip install flask'
     standardOutput = new ByteArrayOutputStream()
     ext.output = { return standardOutput.toString() }
-}
+} */
 
 /*task test(type:Exec, dependsOn: dependances) {
     //println 'Executing tests' 
@@ -37,7 +37,7 @@ task lint(type:Exec) {
 
 def tarfile = "application-" + version
 
-task packageDistribution(type: Zip, dependsOn: dependances) {
+task packageDistribution(type: Zip, dependsOn: purge) {
     //println 'Packaging'
     from ('app') { into '.' }
     archiveFileName = tarfile + ".zip"
