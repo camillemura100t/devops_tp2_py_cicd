@@ -11,9 +11,9 @@ def listApplications():
     response = requests.request("GET", url, headers=headers, data=payload, files=files)
 
     print(response.text)
-
+    
 def addApplication(directory,filepath,filenametodisplay):
-
+    
     url = "http://192.168.0.101:8086/service/rest/v1/components?repository=apprepo"
 
     payload={'raw.directory': directory,
@@ -24,3 +24,4 @@ def addApplication(directory,filepath,filenametodisplay):
     response = requests.request("POST", url, headers=headers, data=payload, files=files)
 
     print(response.text)
+    print(filepath)
