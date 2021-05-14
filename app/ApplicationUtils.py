@@ -10,7 +10,7 @@ def listApplications():
 
     response = requests.request("GET", url, headers=headers, data=payload, files=files)
 
-    print(response.text)
+    return response.text
 
 def addApplication(directory,filepath,filenametodisplay):
 

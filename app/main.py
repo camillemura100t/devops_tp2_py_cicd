@@ -1,5 +1,6 @@
 import MachineUtils
 import ApplicationUtils
+import ApplicationApiConnector
 import json
 from Machine import *
 
@@ -100,6 +101,9 @@ def manageAddApplication():
 
 #This variable allows to loop on the first menu of the app. If set to Q will exit the app. Initial value set to start.
 choice = "start"
+
+#Launch the Api Connector for the application part of the app and the machine part.
+ApplicationApiConnector.launchApiConnector()
 
 #Loop corresponding to the first menu of the app.
 while choice != "Q":
