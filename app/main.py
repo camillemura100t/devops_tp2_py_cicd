@@ -1,7 +1,8 @@
 import MachineUtils
 import ApplicationUtils
-import ApplicationApiConnector
+import ApiConnector
 import json
+import sys
 from Machine import *
 
 #Print in the terminal the intel about a specific machine, on a json-like format.
@@ -103,21 +104,25 @@ def manageAddApplication():
 choice = "start"
 
 #Launch the Api Connector for the application part of the app and the machine part.
-ApplicationApiConnector.launchApiConnector()
-
-#Loop corresponding to the first menu of the app.
-while choice != "Q":
-    print('Voulez-vous : ')
-    print('    - travailler sur le parc de machines (tapez "M")')
-    print('    - travailler sur les versions d\'applications (tapez "A")')
-    print('    - quitter le logiciel (tapez "Q")')
-    choice = input()
-    if choice == "M":
-        manageMachines()
-    elif choice == "A":
-        manageApp()
-    elif choice == "Q":
-        print('Fermeture du logiciel.')
-        print('########################')
-    else:
-        print('S\'il vous plaît entrez un choix valide parmi les suivants.')
+if len(sys.argv) == 2 and sys.argv[1] == 'server':
+    ApiConnector.launchApiConnector()
+else:
+    #Loop corresponding to the first menu of the app.
+    while choice != "Q":
+        print('Voulez-vous : ')
+        print('    - travailler sur le parc de machines (tapez "M")')
+        print('    - travailler sur les versions d\'applications (tapez "A")')
+        print('    - lancer l\'application en mode serveur API (tapez "server")')
+        print('    - quitter le logiciel (tapez "Q")')
+        choice = input()
+        if choice == "M":
+            manageMachines()
+        elif choice == "A":
+            manageApp()
+        elif choice == "server":
+            ApiConnector.launchApiConnector()
+        elif choice == "Q":
+            print('Fermeture du logiciel.')
+            print('########################')
+        else:
+            print('S\'il vous plaît entrez un choix valide parmi les suivants.')
