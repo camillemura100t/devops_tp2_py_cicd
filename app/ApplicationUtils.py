@@ -19,7 +19,7 @@ def addApplication(directory,filepath,filenametodisplay):
     payload={'raw.directory': directory,
     'raw.asset1.filename': filenametodisplay}
     files= {'raw.asset1' : (open(filepath,'rb'))}
-    headers = {'Authorization': 'Basic ***key_removed***='}
+    headers = {'Authorization': 'Basic YWRtaW46UzBuQE4zeDk1MS8='}
 
     response = requests.request("POST", url, headers=headers, data=payload, files=files)
 
